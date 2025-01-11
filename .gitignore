@@ -1,0 +1,5 @@
+/.idea
+/out
+
+/.vscode/*
+!/.vscode/settings.json

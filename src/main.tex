@@ -1,0 +1,54 @@
+% TeXiFy-IDEA (https://plugins.jetbrains.com/plugin/9473-texify-idea) does not
+% find the document class installed through the FlakeTeX
+%
+% Using this weird formating to disable the inspection just for this statement, not the whole file
+\documentclass[12pt,a4paper,titlepage]
+    %! suppress = FileNotFound
+    {article}
+
+%% Packages
+
+% Layout
+\usepackage[margin=25mm]{geometry}
+\linespread{1.5}
+\usepackage[hidelinks]{hyperref}
+
+% Encoding and localization
+\usepackage[TS1,T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[parfill]{parskip}
+
+% Bibliography
+\usepackage[bibstyle=ieee,citestyle=numeric-comp,backend=biber]{biblatex}
+\usepackage{csquotes}
+\addbibresource{main.bib}
+\appto{\bibsetup}{\sloppy}
+\bibsetup{
+    \setcounter{abbrvpenalty}{0}
+    \setcounter{highnamepenalty}{0}
+    \setcounter{lownamepenalty}{0}
+}
+
+%% Preamble
+
+\title{FlakeTeX base template}
+\date{\today}
+
+%% Document
+\begin{document}
+
+    \maketitle
+
+    \pagenumbering{roman}
+    \tableofcontents
+    \cleardoublepage
+
+    \pagenumbering{arabic}
+    \input{about}
+    \input{usage}
+
+    \cleardoublepage
+    \printbibliography[heading=bibintoc]
+
+\end{document}

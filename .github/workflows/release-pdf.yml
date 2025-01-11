@@ -1,0 +1,58 @@
+name: release-pdf
+run-name: "Compile and release LaTeX as a PDF file"
+on:
+  push:
+    paths:
+      - src/
+      - flake.lock
+      - flake.nix
+
+jobs:
+  compile-pdf:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: DeterminateSystems/nix-installer-action@v16
+        name: "Install Nix"
+
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+        name: "Setup Nix cache"
+
+      - uses: actions/checkout@v4
+        name: "Checkout repository"
+
+      - run: nix run . -- -interaction=nonstopmode -halt-on-error
+        name: "Compile main.tex as PDF"
+
+      - uses: actions/upload-artifact@v4
+        name: "Upload PDF as artifact"
+        with:
+          name: "document"
+          path: ./out/main.pdf
+
+  release-pdf:
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: write
+
+    needs:
+      - compile-pdf
+
+    steps:
+      - uses: actions/download-artifact@v4
+        name: "Download PDF document"
+        with:
+          name: "document"
+
+      - run: echo "TAG=$(date +'%Y-%m-%dT%H-%M')" >> $GITHUB_OUTPUT
+        name: "Get release tag from date and time"
+        id: get-tag
+
+      - uses: ncipollo/release-action@v1
+        name: "Release PDF document"
+        with:
+          artifacts: "main.pdf"
+          tag: ${{ steps.get-tag.outputs.tag }}
+          prerelease: ${{ github.ref  != 'refs/heads/main' }}
+

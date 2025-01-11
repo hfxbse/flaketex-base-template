@@ -1,0 +1,45 @@
+\section{Usage}\label{sec:usage}
+
+It is possible to use this template locally or optionally get started right away online via Google Project
+IDX\parencite{noauthor_project_nodate}.
+
+When using GitHub to host your repository, any changes you push will automatically produce and release the matching PDF
+document.
+
+Configuration of LaTeX is done in through the Nix flake file.
+Check it out to add TeX Live packages or any other dependency you may require.
+
+\subsection{Local usage}\label{subsec:local-usage}
+
+To use this template locally, make sure to have Nix\parencite{noauthor_download_nodate} installed and ready to go.
+You probably do not want to have to use Nix as the root user, so make sure to ensure the multi-user mode is set up
+correctly\parencite{noauthor_multi-user_nodate}.
+After completing the Nix installation, the LaTeX project compilation is as simple as running
+
+\begin{verbatim}
+nix --experimental-features 'nix-command flakes' run
+\end{verbatim}
+
+which can be shortened to
+
+\begin{verbatim}
+nix run
+\end{verbatim}
+
+when enabling Flakes by default\parencite{noauthor_flakes_nodate}.
+The result matches the result of the continues delivery pipeline.
+
+Integration with your text editor of choice can normally be achieved by pointing to the helper scripts in the binary
+folder of this template.
+This has been tested for JetBrains IDEs using the TeXiFy-IDEA plugin\parencite{noauthor_hannah-stentexify-idea_2025}.
+
+If you cannot install Nix on to your machine, you can use the development
+container\parencite{noauthor_development_nodate} configuration instead.
+The configuration also includes a minimal configuration for a VSCode and IntelliJ setup.
+
+\subsection{Online usage}\label{subsec:online-usage}
+
+To get started using any of the supported online code environment providers is just a matter of importing this template.
+You might be able to use any remote development environment provider that supports development containers.
+But notably, GitHub Codespaces\parencite{noauthor_github_2025} are not supported due to issues related to the Nix
+store\parencite{noauthor_nix_nodate}.
