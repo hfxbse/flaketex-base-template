@@ -55,3 +55,6 @@ jobs:
           artifacts: "main.pdf"
           tag: ${{ steps.get-tag.outputs.tag }}
           prerelease: ${{ github.ref  != 'refs/heads/main' }}
+
+      - run: echo "Download the compiled PDF release at https://github.com/${{ github.repository }}/releases/tag/${{ steps.get-tag.outputs.tag }}"
+        name: "Show release download URL"
