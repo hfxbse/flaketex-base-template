@@ -3,7 +3,7 @@ run-name: "Compile and release LaTeX as a PDF file"
 on:
   push:
     paths:
-      - src/
+      - src/**
       - flake.lock
       - flake.nix
 
@@ -55,4 +55,3 @@ jobs:
           artifacts: "main.pdf"
           tag: ${{ steps.get-tag.outputs.tag }}
           prerelease: ${{ github.ref  != 'refs/heads/main' }}
-
