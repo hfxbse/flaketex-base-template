@@ -11,7 +11,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, flaketex }: flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, flake-utils, flaketex }: flake-utils.lib.eachDefaultSystemPassThrough (system:
   let
     pkgs = nixpkgs.legacyPackages.${system};
 
@@ -35,20 +35,28 @@
     compile-latex = flaketex.packages.${system}.compile-latex.override { inherit latex; };
   in
   {
-    apps.pdftex = self.apps.${system}.pdflatex;
-    apps.pdflatex = {
-      type = "app";
-      program = "${latex}/bin/pdflatex";
+    templates.default = {
+      path = ./.;
     };
 
-    apps.biber = {
-      type = "app";
-      program = "${latex}/bin/biber";
+    apps.${system} = {
+      pdftex = self.apps.${system}.pdflatex;
+      pdflatex = {
+        type = "app";
+        program = "${latex}/bin/pdflatex";
+      };
+
+      biber = {
+        type = "app";
+        program = "${latex}/bin/biber";
+      };
     };
 
-    packages.default = self.packages.${system}.build;
-    packages.build = pkgs.writeShellScriptBin "build" ''
-      ${compile-latex}/bin/compile-latex -f "src/main.tex" -o "out" -- $@;
-    '';
+    packages.${system} = {
+      default = self.packages.${system}.build;
+      build = pkgs.writeShellScriptBin "build" ''
+        ${compile-latex}/bin/compile-latex -f "src/main.tex" -o "out" -- $@;
+      '';
+    };
   });
 }
