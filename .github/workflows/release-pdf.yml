@@ -6,6 +6,7 @@ on:
       - src/**
       - flake.lock
       - flake.nix
+      - .github/workflows/release-pdf.yml
 
 jobs:
   compile-pdf:
@@ -17,6 +18,9 @@ jobs:
 
       - uses: DeterminateSystems/magic-nix-cache-action@v8
         name: "Setup Nix cache"
+        # only use caching on main branch
+        # Slows the pipeline down on average when the branches are short lived
+        if: ${{ github.ref  != 'refs/heads/main' }}
 
       - uses: actions/checkout@v4
         name: "Checkout repository"
