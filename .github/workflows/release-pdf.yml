@@ -54,5 +54,6 @@ jobs:
           tag: ${{ steps.get-tag.outputs.tag }}
           prerelease: ${{ github.ref  != 'refs/heads/main' }}
 
-      - run: echo "Download the compiled PDF release at https://github.com/${{ github.repository }}/releases/tag/${{ steps.get-tag.outputs.tag }}"
-        name: "Show release download URL"
+      - name: "Show release download URL"
+        run: |
+          echo "Download the [compiled PDF release](https://github.com/${{ github.repository }}/releases/tag/${{ steps.get-tag.outputs.tag }})." >> $GITHUB_STEP_SUMMARY
