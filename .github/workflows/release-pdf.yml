@@ -16,12 +16,6 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@v16
         name: "Install Nix"
 
-      - uses: DeterminateSystems/magic-nix-cache-action@v8
-        name: "Setup Nix cache"
-        # only use caching on main branch
-        # Slows the pipeline down on average when the branches are short lived
-        if: ${{ github.ref  == 'refs/heads/main' }}
-
       - uses: actions/checkout@v4
         name: "Checkout repository"
 
