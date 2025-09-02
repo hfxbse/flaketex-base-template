@@ -6,7 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
 
     flaketex = {
-      url = "github:hfxbse/nixos-config?ref=derivation/flaketex";
+      url = "github:hfxbse/nixos-config";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -32,7 +32,7 @@
         # Search for packages at https://search.nixos.org/packages
       ]);
 
-    compile-latex = flaketex.packages.${system}.compile-latex.override { inherit latex; };
+    compile-latex = flaketex.packages.${system}.flaketex.override { inherit latex; };
   in
   {
     templates.default = {
