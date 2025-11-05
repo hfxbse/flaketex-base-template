@@ -17,13 +17,14 @@ correctly\parencite{noauthor_multi-user_nodate}.
 After completing the Nix installation, the LaTeX project compilation is as simple as running
 
 \begin{verbatim}
-nix --experimental-features 'nix-command flakes' run
+# -L shows the full build log
+nix --experimental-features 'nix-command flakes' build -L
 \end{verbatim}
 
 which can be shortened to
 
 \begin{verbatim}
-nix run
+nix build -L
 \end{verbatim}
 
 when enabling Flakes by default\parencite{noauthor_flakes_nodate}.

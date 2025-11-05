@@ -19,14 +19,14 @@ jobs:
       - uses: actions/checkout@v4
         name: "Checkout repository"
 
-      - run: nix run . -- -interaction=nonstopmode -halt-on-error
+      - run: nix build -L
         name: "Compile main.tex as PDF"
 
       - uses: actions/upload-artifact@v4
         name: "Upload PDF as artifact"
         with:
           name: "document"
-          path: ./out/main.pdf
+          path: ./result/*.pdf
 
   release-pdf:
     runs-on: ubuntu-24.04
