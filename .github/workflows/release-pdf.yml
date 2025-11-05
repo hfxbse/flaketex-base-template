@@ -8,6 +8,10 @@ on:
       - flake.nix
       - .github/workflows/release-pdf.yml
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   compile-pdf:
     runs-on: ubuntu-24.04
