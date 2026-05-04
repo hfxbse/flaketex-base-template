@@ -62,30 +62,35 @@
           };
         };
 
-        packages.${system} = {
-          default = self.packages.${system}.pdf;
-          pdf = pkgs.callPackage (
-            { stdenvNoCC, ... }:
-            stdenvNoCC.mkDerivation rec {
+        packages.${system} =
+          let
+            buildPdf =
+              { name, tex }:
+              pkgs.callPackage (
+                { stdenvNoCC, lib, ... }:
+                stdenvNoCC.mkDerivation {
+                  inherit name;
+                  src = ./src;
+                  nativeBuildInputs = [ compile-latex ];
+
+                  buildPhase = ''
+                    HOME=$(mktemp -d);
+                    compile-latex -f "${tex}" -- -interaction=nonstopmode -halt-on-error;
+                  '';
+
+                  installPhase = ''
+                    install -Dm 644 "${lib.strings.removeSuffix ".tex" tex}.pdf" "$out/${name}.pdf";
+                  '';
+                }
+              ) { };
+          in
+          {
+            default = self.packages.${system}.pdf;
+            pdf = buildPdf {
               name = "flaketex-base-template";
-              src = ./src;
-              nativeBuildInputs = [ compile-latex ];
-
-              buildPhase = ''
-                HOME=$(mktemp -d);
-                compile-latex -f "main.tex" -- -interaction=nonstopmode -halt-on-error;
-              '';
-
-              installPhase = ''
-                install -Dm 644 "main.pdf" "$out/${name}.pdf";
-              '';
-            }
-          ) { };
-
-          builder = pkgs.writeShellScriptBin "builder" ''
-            ${compile-latex}/bin/compile-latex -f "src/main.tex" -o "out" -- $@;
-          '';
-        };
+              tex = "main.tex";
+            };
+          };
       }
     );
 }
